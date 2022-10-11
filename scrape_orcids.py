@@ -44,7 +44,7 @@ options.add_argument('--no-sandbox')
 options.add_argument('user-agent=Mozilla/5.0 (Windows NT x.y; rv:10.0) Gecko/20100101 Firefox/10.0')
 driver = webdriver.Firefox(executable_path='D:/PycharmProjects/webdriver/geckodriver.exe' , options=options)
 
-swps_publication_dir = r'D:\data\ranking\swps'
+# swps_publication_dir = r'D:\data\ranking\swps'
 
 date_range = (2017, 2022)
 
@@ -122,37 +122,19 @@ for name, orcid in tqdm(name_orcid):
 # save a = div.parent.parent.parent.previousSibling
 df = pd.DataFrame({'name': names_list, 'orcid': orcids_list, 'link': links_list, 'date': dates_list})
 
-# drop duplicates
 
-# get duplicates based on all columns
-duplicates = df[df.duplicated(keep=False)]
+df.to_csv('data/swps_publication_links.csv', index=False)
 
-
-a = df.drop_duplicates()
-# reset index
-a = a.reset_index(drop=True)
-a.to_csv('data/swps_publication_links.csv', index=False)
-
-# load
 publications = pd.read_csv('data/swps_publication_links.csv')
+# import matplotlib
+# matplotlib.use('TkAgg')
+# import matplotlib.pyplot as plt
+# counts = publications.name.value_counts()
+# # plot
+# plt.figure(figsize=(10, 10))
+# plt.barh(counts.index, counts.values)
 
-# drop duplicates from links
-dropped = publications.drop_duplicates(subset=['link'])
-import matplotlib
-matplotlib.use('TkAgg')
-import matplotlib.pyplot as plt
-counts = publications.name.value_counts()
-# plot
-plt.figure(figsize=(10, 10))
-plt.barh(counts.index, counts.values)
-
-
-
-names = df.name.unique()
-missing = [(name, orcid) for name, orcid in name_orcid if name not in names]
-
-
-def redo_on_one(orcid):
+def redo_on_one(orcid, name):
     driver.get(orcid)
     time.sleep(3)
     html = driver.page_source
