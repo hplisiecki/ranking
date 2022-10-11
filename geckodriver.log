@@ -233,3 +233,109 @@ console.warn: LoginRecipes: "Falling back to a synchronous message for: https://
 console.warn: LoginRecipes: "Falling back to a synchronous message for: https://orcid.org."
 console.warn: LoginRecipes: "Falling back to a synchronous message for: https://orcid.org."
 console.warn: LoginRecipes: "Falling back to a synchronous message for: https://orcid.org."
+1665485158874	geckodriver	INFO	Listening on 127.0.0.1:15051
+1665485161941	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--no-sandbox" "user-agent=Mozilla/5.0 (Windows NT x.y; rv:10.0) Gecko/20100101 Firefox/10.0" "--remote-debugging-port" "15052" "-no-remote" "-profile" "C:\\Users\\hplis\\AppData\\Local\\Temp\\rust_mozprofileJ2IJWd"
+1665485163212	Marionette	INFO	Marionette enabled
+1665485163219	Marionette	INFO	Listening on port 15059
+WebDriver BiDi listening on ws://127.0.0.1:15052
+1665485163505	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\hplis\\AppData\\Local\\Temp\\rust_mozprofileJ2IJWd\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:15052/devtools/browser/42168dad-e317-4f2e-b176-ab0766f4f933
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript warning: https://pagead2.googlesyndication.com/bg/75n5MIkdKjMQGlOCWCYwhumMUPtaURPkn9Lrop-Fp5U.js line 2 > eval line 3989 > eval line 1 > eval line 1 > eval, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+JavaScript warning: https://pagead2.googlesyndication.com/bg/75n5MIkdKjMQGlOCWCYwhumMUPtaURPkn9Lrop-Fp5U.js line 2 > eval line 2144 > eval line 1 > eval line 1 > eval, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+1665506773091	geckodriver	INFO	Listening on 127.0.0.1:2415
+1665506776161	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--no-sandbox" "user-agent=Mozilla/5.0 (Windows NT x.y; rv:10.0) Gecko/20100101 Firefox/10.0" "--remote-debugging-port" "2416" "-no-remote" "-profile" "C:\\Users\\hplis\\AppData\\Local\\Temp\\rust_mozprofileO1jsx9"
+1665506776606	Marionette	INFO	Marionette enabled
+1665506776610	Marionette	INFO	Listening on port 2421
+WebDriver BiDi listening on ws://127.0.0.1:2416
+1665506776818	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\hplis\\AppData\\Local\\Temp\\rust_mozprofileO1jsx9\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:2416/devtools/browser/ea426b0c-ca72-47b8-b1a1-ad5ef6150f16
+1665508175849	geckodriver	INFO	Listening on 127.0.0.1:2486
+1665508178962	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--no-sandbox" "user-agent=Mozilla/5.0 (Windows NT x.y; rv:10.0) Gecko/20100101 Firefox/10.0" "--remote-debugging-port" "2487" "-no-remote" "-profile" "C:\\Users\\hplis\\AppData\\Local\\Temp\\rust_mozprofileXFH4JO"
+1665508179431	Marionette	INFO	Marionette enabled
+1665508179435	Marionette	INFO	Listening on port 2493
+WebDriver BiDi listening on ws://127.0.0.1:2487
+1665508179547	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\hplis\\AppData\\Local\\Temp\\rust_mozprofileXFH4JO\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:2487/devtools/browser/5d6904bc-6998-4416-9947-39b3cdd599d2
+1665509405497	geckodriver	INFO	Listening on 127.0.0.1:28220
+1665509408570	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--no-sandbox" "user-agent=Mozilla/5.0 (Windows NT x.y; rv:10.0) Gecko/20100101 Firefox/10.0" "--remote-debugging-port" "28221" "-no-remote" "-profile" "C:\\Users\\hplis\\AppData\\Local\\Temp\\rust_mozprofileOHGimH"
+1665509409038	Marionette	INFO	Marionette enabled
+1665509409043	Marionette	INFO	Listening on port 28226
+WebDriver BiDi listening on ws://127.0.0.1:28221
+1665509409137	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\hplis\\AppData\\Local\\Temp\\rust_mozprofileOHGimH\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:28221/devtools/browser/bd46c695-3da8-47f7-9a26-fe3805e68903
+JavaScript warning: https://www.webofscience.com/QC2P5Bdcb0VT/NWgBVu/6KYkng/1p7ht4zh/dyIVCmg/L2c1/XEZgKk4B, line 1: unreachable code after return statement
+JavaScript warning: https://www.webofscience.com/QC2P5Bdcb0VT/NWgBVu/6KYkng/1p7ht4zh/dyIVCmg/L2c1/XEZgKk4B, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+JavaScript warning: https://www.webofscience.com/QC2P5Bdcb0VT/NWgBVu/6KYkng/1p7ht4zh/dyIVCmg/L2c1/XEZgKk4B, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+console.warn: LoginRecipes: "Falling back to a synchronous message for: https://access.clarivate.com."
+JavaScript warning: https://www.webofscience.com/QC2P5Bdcb0VT/NWgBVu/6KYkng/1p7ht4zh/dyIVCmg/L2c1/XEZgKk4B, line 1: unreachable code after return statement
+JavaScript warning: https://www.webofscience.com/QC2P5Bdcb0VT/NWgBVu/6KYkng/1p7ht4zh/dyIVCmg/L2c1/XEZgKk4B, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+JavaScript warning: https://www.webofscience.com/QC2P5Bdcb0VT/NWgBVu/6KYkng/1p7ht4zh/dyIVCmg/L2c1/XEZgKk4B, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+1665516395425	geckodriver	INFO	Listening on 127.0.0.1:7972
+1665516398494	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--no-sandbox" "user-agent=Mozilla/5.0 (Windows NT x.y; rv:10.0) Gecko/20100101 Firefox/10.0" "--remote-debugging-port" "7973" "-no-remote" "-profile" "C:\\Users\\hplis\\AppData\\Local\\Temp\\rust_mozprofileKovOSK"
+1665516398967	Marionette	INFO	Marionette enabled
+1665516398971	Marionette	INFO	Listening on port 7978
+WebDriver BiDi listening on ws://127.0.0.1:7973
+1665516399077	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\hplis\\AppData\\Local\\Temp\\rust_mozprofileKovOSK\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:7973/devtools/browser/8d0508b5-6cfc-41ef-81ae-46e7c3ffdef3
+1665517032930	Marionette	INFO	Stopped listening on port 7978
+console.warn: TopSitesFeed: Failed to fetch data from Contile server: NetworkError when attempting to fetch resource.
+1665517129023	geckodriver	INFO	Listening on 127.0.0.1:29328
+1665517132105	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--no-sandbox" "user-agent=Mozilla/5.0 (Windows NT x.y; rv:10.0) Gecko/20100101 Firefox/10.0" "--remote-debugging-port" "29329" "-no-remote" "-profile" "C:\\Users\\hplis\\AppData\\Local\\Temp\\rust_mozprofile3TKYvQ"
+1665517132474	Marionette	INFO	Marionette enabled
+1665517132479	Marionette	INFO	Listening on port 29335
+WebDriver BiDi listening on ws://127.0.0.1:29329
+1665517132736	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\hplis\\AppData\\Local\\Temp\\rust_mozprofile3TKYvQ\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:29329/devtools/browser/e4700543-e58e-4ef0-9933-c6457bb06959
+1665520802473	geckodriver	INFO	Listening on 127.0.0.1:2722
+1665520805533	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--no-sandbox" "user-agent=Mozilla/5.0 (Windows NT x.y; rv:10.0) Gecko/20100101 Firefox/10.0" "--remote-debugging-port" "2723" "-no-remote" "-profile" "C:\\Users\\hplis\\AppData\\Local\\Temp\\rust_mozprofile75pXyQ"
+1665520806038	Marionette	INFO	Marionette enabled
+1665520806042	Marionette	INFO	Listening on port 2728
+WebDriver BiDi listening on ws://127.0.0.1:2723
+1665520806152	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\hplis\\AppData\\Local\\Temp\\rust_mozprofile75pXyQ\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:2723/devtools/browser/1238fea6-f6a8-46c0-8826-8196b4125b8b
+1665521120324	Marionette	INFO	Stopped listening on port 2728
+console.warn: TopSitesFeed: Failed to fetch data from Contile server: NetworkError when attempting to fetch resource.
+1665521129397	geckodriver	INFO	Listening on 127.0.0.1:2735
+1665521132483	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--no-sandbox" "user-agent=Mozilla/5.0 (Windows NT x.y; rv:10.0) Gecko/20100101 Firefox/10.0" "--remote-debugging-port" "2736" "-no-remote" "-profile" "C:\\Users\\hplis\\AppData\\Local\\Temp\\rust_mozprofileeC1F9t"
+1665521132848	Marionette	INFO	Marionette enabled
+1665521132852	Marionette	INFO	Listening on port 2748
+WebDriver BiDi listening on ws://127.0.0.1:2736
+1665521133082	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\hplis\\AppData\\Local\\Temp\\rust_mozprofileeC1F9t\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:2736/devtools/browser/fb05df7f-7921-4c07-b4c7-79718ef4cd54
+JavaScript error: resource://gre/actors/ContentMetaChild.jsm, line 183: InvalidStateError: JSWindowActorChild.sendAsyncMessage: JSWindowActorChild cannot send at the moment
+1665521873248	geckodriver	INFO	Listening on 127.0.0.1:3317
+1665521876303	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--no-sandbox" "user-agent=Mozilla/5.0 (Windows NT x.y; rv:10.0) Gecko/20100101 Firefox/10.0" "--remote-debugging-port" "3318" "-no-remote" "-profile" "C:\\Users\\hplis\\AppData\\Local\\Temp\\rust_mozprofile79fsob"
+1665521876766	Marionette	INFO	Marionette enabled
+1665521876771	Marionette	INFO	Listening on port 3323
+WebDriver BiDi listening on ws://127.0.0.1:3318
+1665521876885	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\hplis\\AppData\\Local\\Temp\\rust_mozprofile79fsob\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:3318/devtools/browser/e9973181-2519-4f01-9563-8be76cffd81b
+1665523052314	geckodriver	INFO	Listening on 127.0.0.1:23142
+1665523055366	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--no-sandbox" "user-agent=Mozilla/5.0 (Windows NT x.y; rv:10.0) Gecko/20100101 Firefox/10.0" "--remote-debugging-port" "23143" "-no-remote" "-profile" "C:\\Users\\hplis\\AppData\\Local\\Temp\\rust_mozprofilei1FWwK"
+1665523055778	Marionette	INFO	Marionette enabled
+1665523055782	Marionette	INFO	Listening on port 23148
+WebDriver BiDi listening on ws://127.0.0.1:23143
+1665523056032	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\hplis\\AppData\\Local\\Temp\\rust_mozprofilei1FWwK\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:23143/devtools/browser/8bc7ef7b-ddb5-4006-90bd-571ac2e0a1e8
+1665523749967	geckodriver	INFO	Listening on 127.0.0.1:23753
+1665523753024	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--no-sandbox" "user-agent=Mozilla/5.0 (Windows NT x.y; rv:10.0) Gecko/20100101 Firefox/10.0" "--remote-debugging-port" "23754" "-no-remote" "-profile" "C:\\Users\\hplis\\AppData\\Local\\Temp\\rust_mozprofilelgOVgr"
+1665523753448	Marionette	INFO	Marionette enabled
+1665523753456	Marionette	INFO	Listening on port 23759
+WebDriver BiDi listening on ws://127.0.0.1:23754
+1665523753663	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\hplis\\AppData\\Local\\Temp\\rust_mozprofilelgOVgr\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:23754/devtools/browser/84a42184-3d7d-4136-a92b-c3e114f7f683
+1665525326579	Marionette	INFO	Stopped listening on port 23759
+console.warn: TopSitesFeed: Failed to fetch data from Contile server: NetworkError when attempting to fetch resource.

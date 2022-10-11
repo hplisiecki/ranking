@@ -20,6 +20,8 @@ df = df[['Lp', 'Id', 'Dane podstawowe - Imię', 'Dane podstawowe - Drugie imię'
 new_columns = ['Lp', 'id', 'name', 'second_name', 'pre_surname', 'surname', 'uni_id', 'uni_name', 'date_start',
                 'is_main_job', 'disciplines']
 
+
+
 df.columns = new_columns
 
 prev_id = 'melon'
@@ -44,18 +46,60 @@ for index, row in df.iterrows():
 
 df['fullname'] = names
 
+
+numbers = df.id.value_counts()
+
+df['number_of_affiliations'] = df.id.map(numbers)
+
+a = df['uni_name'].value_counts()
+
+# retain more than one
+a = a[a > 1]
+
 institutes = list(set(df['uni_name'].to_list()))
 
 institutes = (i for i in institutes if str(i) != 'nan')
 
 swps_waw = df[df['uni_name'] == 'SWPS Uniwersytet Humanistycznospołeczny z siedzibą w Warszawie']
+
+
 duplicates = swps_waw[swps_waw.duplicated(subset=['fullname'], keep=False)]
 
-names_and_starts = swps_waw[['fullname', 'date_start']]
+
+
+not_psych = swps_waw[~swps_waw['disciplines'].str.contains('psycholog', na = False)]
+
+psych = swps_waw[swps_waw['disciplines'].str.contains('psycholog', na = False)]
+
+
+more_than_one = psych[psych['number_of_affiliations'] > 1]
+
+
+not_main = more_than_one[more_than_one['is_main_job'] != 'Tak']
+# reset index
+not_main = not_main.reset_index(drop=True)
+
+outside_list = ['Magdalena Witkowska', 'Marzenna Teresa Zakrzewska']
+psych = psych[~psych['fullname'].isin(outside_list)]
+
+names_and_starts = psych[['fullname', 'date_start']]
 # dropn duplicates from fullnames
 names_and_starts = names_and_starts.drop_duplicates(subset=['fullname'], keep='first')
 
 names = names_and_starts[['fullname']]
+
+filled_hubert = pd.read_csv('filled_hubert.csv')
+filled_hubert = filled_hubert[filled_hubert.fullname.isin(names.fullname)]
+
+# map orcids
+orcids_hubert = filled_hubert[['fullname', 'orcid', 'assigned']]
+
+# save
+orcids_hubert.to_csv('orcids_hubert.csv', index=False)
+# to excel
+orcids_hubert.to_excel('orcids_hubert.xlsx', index=False)
+
+
 
 assigned = []
 assigned = ['Kacper' for i in range(63)]
