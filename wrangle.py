@@ -1,7 +1,10 @@
-import pandas as pd
-import numpy as np
-from tqdm import tqdm
 import time
+import numpy as np
+import pandas as pd
+from tqdm import tqdm
+
+# scientist.csv is file download from radon.pl wchich contains data for registered scientist in Poland. 
+# Registration i obligatory for almost all active scienists, especialy those who works at Universities
 df = pd.read_csv('scientists.csv')
 
 # new_columnds = ['Lp', 'id', 'name', 'second_name', 'pre_surname', 'surname', 'uni_id', 'uni_name', 'date_start',
@@ -10,20 +13,20 @@ df = pd.read_csv('scientists.csv')
 #                 'science_title_type', 'science_title_date' 'science_title_giver', 'science_foreign_title_reason',
 #                 'science_foreign_title_giver', 'science_title_country',
 
+#Selecting and changing variables into proper names in english
 df = df[['Lp', 'Id', 'Dane podstawowe - Imię', 'Dane podstawowe - Drugie imię',
-       'Dane podstawowe - Przedrostek nazwiska', 'Dane podstawowe - Nazwisko',
-       'Zatrudnienie - Id', 'Zatrudnienie - Nazwa',
-       'Zatrudnienie - Data początku zatrudnienia',
-       'Zatrudnienie - Podstawowe miejsce pracy',
-       'Zatrudnienie - Oświadczone dyscypliny']]
+         'Dane podstawowe - Przedrostek nazwiska', 'Dane podstawowe - Nazwisko',
+         'Zatrudnienie - Id', 'Zatrudnienie - Nazwa',
+         'Zatrudnienie - Data początku zatrudnienia',
+         'Zatrudnienie - Podstawowe miejsce pracy',
+         'Zatrudnienie - Oświadczone dyscypliny']]
 
-new_columns = ['Lp', 'id', 'name', 'second_name', 'pre_surname', 'surname', 'uni_id', 'uni_name', 'date_start',
-                'is_main_job', 'disciplines']
-
-
+new_columns = ['Lp', 'id', 'name', 'second_name', 'pre_surname', 'surname', 'uni_id', 
+                'uni_name', 'date_start','is_main_job', 'disciplines']
 
 df.columns = new_columns
 
+#repairing dataset by filling missing values
 prev_id = 'melon'
 names = []
 for index, row in df.iterrows():
@@ -113,6 +116,7 @@ names = names.reset_index(drop=True)
 
 orcid = []
 from selenium import webdriver
+
 # geckodriver
 options = webdriver.FirefoxOptions()
 
@@ -164,13 +168,17 @@ names['orcid'] = orcid
 # save
 names.to_csv('names_with_orcids.csv')
 
-# load
-import pandas as pd
 import time
-from tqdm import tqdm
+
+# load
+
+
+
+
 names = pd.read_csv('names_with_orcids.csv')
 
 from selenium import webdriver
+
 # geckodriver
 options = webdriver.FirefoxOptions()
 
