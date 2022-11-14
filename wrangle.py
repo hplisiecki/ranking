@@ -46,7 +46,8 @@ institutes.to_csv('institutes.csv')
 institutes.colums = ['Uni.name','counts']
 
 
-#for i in institutes
+for i in institutes:
+         temp_df = institutes[institutes['Uni.name'] == i]
 
 
 #institutes = list(set(df['uni_name'].to_list()))
