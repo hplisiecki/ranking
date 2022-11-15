@@ -2,19 +2,19 @@ import time
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
+import os
 
 # scientist.csv is file download from radon.pl wchich contains data for registered scientist in Poland. 
 # Registration i obligatory for almost all active scienists, especialy those who works at Universities
 df = pd.read_csv('scientists.csv')
 
 #Selecting columns
-df = df[['Lp', 'Id', 'Dane podstawowe - Imię', 'Dane podstawowe - Drugie imię',
-         'Dane podstawowe - Przedrostek nazwiska', 'Dane podstawowe - Nazwisko',
-         'Zatrudnienie - Id', 'Zatrudnienie - Nazwa']]
+df = df[['Id', 'Dane podstawowe - Imię', 'Dane podstawowe - Drugie imię',
+         'Dane podstawowe - Przedrostek nazwiska', 'Dane podstawowe - Nazwisko', 'Zatrudnienie - Nazwa','Zatrudnienie - Podstawowe miejsce pracy',]]
 
 #changing names to English
-df.columns = ['Lp', 'id', 'name', 'second_name', 'pre_surname', 'surname', 'uni_id', 
-                'uni_name']
+df.columns = ['id', 'name', 'second_name', 'pre_surname', 'surname', 
+                'uni_name', 'is_a_main_job']
 
 #filling missing names values
 prev_id = 'melon'
@@ -42,19 +42,26 @@ df['fullname'] = names
 #selecting institutes with at least 30 scientists
 institutes = df['uni_name'].value_counts()
 institutes = institutes[institutes > 29]
+
+#create file with institutions' names
 institutes.to_csv('institutes.csv')
-institutes.colums = ['Uni.name','counts']
 
+#selecting scientists who are connected to selected institutions
+df_selected=df[df['uni_name'].isin(institutes.index)]
+#df_selected=df_selected[['id', 'fullname','uni_name']]
+df_selected=df_selected.drop_duplicates(subset=['id'], keep='first')
 
-for i in institutes:
-         temp_df = institutes[institutes['Uni.name'] == i]
+#making file for sciencits who wasn't selected
+df_notselected=df[~df['id'].isin(df_selected.id)]
+df_notselected=df_notselected.drop_duplicates(subset=['id'], keep='first')
 
+#making files for selected scientists
+for i in institutes.index:
+    x=df_selected[df_selected.uni_name==i]
+    dir=os.path.join('test', i)
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+    x[['fullname', 'uni_name']].to_csv('%s/names.csv' % dir)
 
-#institutes = list(set(df['uni_name'].to_list()))
-
-#institutes = (i for i in institutes if str(i) != 'nan')
-
-#swps_waw = df[df['uni_name'] == 'SWPS Uniwersytet Humanistycznospołeczny z siedzibą w Warszawie']
-
-
-#duplicates = swps_waw[swps_waw.duplicated(subset=['fullname'], keep=False)]
+#making file for unselected
+df_notselected[['fullname','uni_name']].to_csv('test/other/names.csv')
