@@ -1,0 +1,12 @@
+swps_links - orcids for scientists
+
+swps_publication_links - publication links (dois)
+
+swps_publication_merged_ids - merged publications from orcid and wos with special scientist ids
+    and info about title/link
+
+# add another step for post title addition
+swps_publication_merged_ids_after_auto_title - merged publications from orcid and wos
+    with special scientist ids and post title automation
+
+swps_publications_with_links_after_auto_pdf - post pdf download
