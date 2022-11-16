@@ -1,4 +1,5 @@
 def get_doi_from_html(html):
+    date_range = (2017, 2022)
     longer = False
     soup = bs(html, 'html.parser')
     # find strong
@@ -68,8 +69,12 @@ def find_date(string):
         date = ['unrecovered']
     return date
 
-def scrape_orcids(fullnames, orcids, save_path):
-    name_orcid = [(fullname, orcid) for fullname, orcid in zip(fullnames, orcids) if 'orcid' in str(orcid)]
+def scrape_orcids(institute):
+
+    links_df = pd.read_csv(f'data/{institute}_links.csv')
+    checked = links_df[links_df['Checked'] == True]
+
+    name_orcid = [(fullname, orcid) for fullname, orcid in zip(checked['fullname'], checked['orcid']) if 'orcid' in str(orcid)]
 
     # scrape orcid website
     from selenium import webdriver
@@ -80,11 +85,6 @@ def scrape_orcids(fullnames, orcids, save_path):
     options.add_argument('--no-sandbox')
     options.add_argument('user-agent=Mozilla/5.0 (Windows NT x.y; rv:10.0) Gecko/20100101 Firefox/10.0')
     driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
-
-    # swps_publication_dir = r'D:\data\ranking\swps'
-
-    date_range = (2017, 2022)
-
     links_list = []
     names_list = []
     orcids_list = []
@@ -121,7 +121,7 @@ def scrape_orcids(fullnames, orcids, save_path):
     # save a = div.parent.parent.parent.previousSibling
     df = pd.DataFrame({'name': names_list, 'orcid': orcids_list, 'link': links_list, 'date': dates_list})
 
-    df.to_csv(save_path, index=False)
+    df.to_csv(f'data/{institute}_publication_links.csv', index=False)
 
     return failed
 
@@ -134,13 +134,12 @@ def main():
     from selenium.webdriver.firefox.service import Service as FirefoxService
     from webdriver_manager.firefox import GeckoDriverManager
     import pandas as pd
-    swps_links = pd.read_csv('data/swps_links.csv')
-    checked = swps_links[swps_links['Checked'] == True]
-    failed = scrape_orcids(checked['fullname'].values, checked['orcid'].values, 'data/swps_publication_links.csv')
+
+    institute = 'swps'
+    failed = scrape_orcids(institute)
     print('failed', failed)
     # publications = pd.read_csv('data/swps_publication_links.csv')
 
 if __name__ == '__main__':
-    # this code is best ran manually in the console because of the need to input some people manually
     main()
 
