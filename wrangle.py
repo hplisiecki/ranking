@@ -17,6 +17,10 @@ df = df[['Id', 'Dane podstawowe - Imię', 'Dane podstawowe - Drugie imię',
 df.columns = ['id', 'name', 'second_name', 'pre_surname', 'surname', 
                 'uni_name', 'is_a_main_job']
 
+df=df.replace({'uni_name':'im. '},{'uni_name':''},regex=True)
+df=df.replace({'uni_name':'sp. z o.o. '},{'uni_name':''},regex=True)
+df=df.replace({'uni_name':' '},{'uni_name':'_'},regex=True)
+
 # Filling missing names values
 prev_id = 'melon'
 names = []
