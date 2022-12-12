@@ -5,7 +5,7 @@ pd.options.mode.chained_assignment = None
 from tqdm import tqdm
 import os
 
-# scientist.csv is file downloaded from radon.plm which contains data for registered scientist in Poland. 
+# scientist.csv is file downloaded from radon.pl database of registered scientist in Poland. 
 # Registration i obligatory for almost all active scienists, especialy those who works at Universities
 df = pd.read_csv('./data/scientists.csv')
 
