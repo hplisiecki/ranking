@@ -1,9 +1,19 @@
+import pandas as pd
+from tqdm import tqdm
+import time
+import re
+from selenium.webdriver.firefox.service import Service as FirefoxService
+from webdriver_manager.firefox import GeckoDriverManager
+import pandas as pd
+import os
+from bs4 import BeautifulSoup as bs
+
 def get_doi_from_html(html):
     date_range = (2017, 2022)
     longer = False
     soup = bs(html, 'html.parser')
     # find strong
-    works = soup.find_all('div', {'class': 'orc-font-body-large clickable'})
+    works = soup.find_all('div', {'class': 'clickable'})
     works = [w for w in works if 'Works' in w.text][0].text
 
     # get all divs with class 'panel-data-container'
@@ -36,6 +46,7 @@ def get_doi_from_html(html):
 
     # find http links in every div
     links = []
+    journals = []
     for div in divs_in_range:
         a = div.find_all('a')
         link = 'empty'
@@ -47,11 +58,16 @@ def get_doi_from_html(html):
         if link == 'empty':
             title_container = div.parent.parent.parent.previousSibling
             # get h2
-            link = title_container.find('h2').text  # get title
+            link = title_container.text  # get title
+
+        # find 'ngcontent-iyt-c176=' div
+        b = div.find_all('div', {'class': 'general-data ng-star-inserted'})
+        journal = b[0].text.replace('\n', '').strip()
 
         links.append(link)
+        journals.append(journal)
 
-    return links, longer
+    return links, longer, journals, limited_dates
 
 def find_date(string):
     pattern = re.compile(r'\d{4}-\d{2}-\d{2}')
@@ -69,10 +85,9 @@ def find_date(string):
         date = ['unrecovered']
     return date
 
-def scrape_orcids(institute):
+def scrape_orcids(links_df):
 
-    links_df = pd.read_csv(f'data/{institute}_links.csv')
-    checked = links_df[links_df['Checked'] == True]
+    checked = links_df[links_df['Checked'] == 1]
 
     name_orcid = [(fullname, orcid) for fullname, orcid in zip(checked['fullname'], checked['orcid']) if 'orcid' in str(orcid)]
 
@@ -90,12 +105,13 @@ def scrape_orcids(institute):
     orcids_list = []
     failed = []
     dates_list = []
+    journals_list = []
     for name, orcid in tqdm(name_orcid):
         try:
             driver.get(orcid)
             time.sleep(5)
             html = driver.page_source
-            links, longer = get_doi_from_html(html)
+            links, longer, journals, limited_dates = get_doi_from_html(html)
 
             if longer:
                 try:
@@ -104,7 +120,7 @@ def scrape_orcids(institute):
                     button.click()
                     time.sleep(5)
                     html = driver.page_source
-                    more_links, longer = get_doi_from_html(html)
+                    more_links, longer, journals, limited_dates = get_doi_from_html(html)
                     links.extend(more_links)
 
                 except:
@@ -114,31 +130,41 @@ def scrape_orcids(institute):
             names_list.extend([name] * len(links))
             orcids_list.extend([orcid] * len(links))
             dates_list.extend(limited_dates)
+            journals_list.extend(journals)
 
         except:
             failed.append(orcid)
 
     # save a = div.parent.parent.parent.previousSibling
-    df = pd.DataFrame({'name': names_list, 'orcid': orcids_list, 'link': links_list, 'date': dates_list})
+    df = pd.DataFrame({'name': names_list, 'orcid': orcids_list, 'link': links_list, 'date': dates_list, 'journal': journals_list})
 
-    df.to_csv(f'data/{institute}_publication_links.csv', index=False)
 
-    return failed
+    return failed, df
 
 
 def main():
-    import pandas as pd
-    from tqdm import tqdm
-    import time
-    import re
-    from selenium.webdriver.firefox.service import Service as FirefoxService
-    from webdriver_manager.firefox import GeckoDriverManager
-    import pandas as pd
 
-    institute = 'swps'
-    failed = scrape_orcids(institute)
-    print('failed', failed)
-    # publications = pd.read_csv('data/swps_publication_links.csv')
+    data_dir = r'D:\data\ranking\data'
+
+    failed_list = []
+    uni_list = []
+
+    for uni in tqdm(os.listdir(data_dir)):
+        print(uni)
+        try:
+            links_df = pd.read_excel(os.path.join(data_dir, uni, 'names.xlsx'))
+        except:
+            print(f"Failed to fetch names for {uni}.")
+            continue
+        failed, df = scrape_orcids(links_df)
+
+        df.to_csv(rf'D:\data\ranking\publication_links\{uni}.csv', index=False)
+        #
+        uni_list.extend([uni] * len(failed))
+        failed_list.extend(failed)
+        print('failed', failed)
+    failed_df = pd.DataFrame({'uni': uni_list, 'failed': failed_list})
+    failed_df.to_csv(r'D:\data\ranking\publication_links\failed.csv', index=False)
 
 if __name__ == '__main__':
     main()
