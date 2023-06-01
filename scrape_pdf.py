@@ -31,59 +31,63 @@ def merge_and_make_ids(institute):
 
 
 
-def automatic_title_fill(institute):
-    publications_df = pd.read_csv(f'data/{institute}_publications_merged_ids.csv')
+# def automatic_title_fill(institute):
+#     publications_df = pd.read_csv(f'data/{institute}_publications_merged_ids.csv')
+#
+#
+#     titles = publications_df[publications_df.is_a_link == 0].link.values
+#
+#     titles_df = publications_df[publications_df.is_a_link == 0]
+#
+#     browser = mechanize.Browser()
+#     browser.set_handle_robots(False)
+#     browser.addheaders = [('User-agent', 'Firefox')]
+#
+#     links = []
+#     for number in tqdm(range(len(titles))):
+#         title = titles[number]
+#         proper = False
+#         while proper == False:
+#             try:
+#                 browser.open('https://sci-hub.se')
+#                 browser.select_form(nr=0)
+#                 proper = True
+#             except:
+#                 print('sleep')
+#                 time.sleep(60)
+#         # use form
+#         browser['request'] = title
+#         response = browser.submit()
+#         links.append(browser.geturl())
+#         print(browser.geturl())
+#
+#     cnt = 0
+#     for idx, link in enumerate(links):
+#         if link != 'https://sci-hub.se/':
+#             cnt += 1
+#             # change the value in the dataframe
+#             titles_df.iloc[idx, 2] = link
+#             # get the index of the row
+#             index = titles_df[titles_df['link'] == link].index[0]
+#             # change the value in the dataframe
+#             publications_df.iloc[index, 2] = link
+#
+#     publications_df.to_csv(f'data/{institute}_publications_merged_ids_after_auto_title.csv')
+#
+#     titles_df = publications[publications.is_a_link == 0].reset_index(drop=True)
+#     titles_df.to_csv(f'data/{institute}_titles.csv', index=False)
 
 
-    titles = publications_df[publications_df.is_a_link == 0].link.values
-
-    titles_df = publications_df[publications_df.is_a_link == 0]
-
-    browser = mechanize.Browser()
-    browser.set_handle_robots(False)
-    browser.addheaders = [('User-agent', 'Firefox')]
-
-    links = []
-    for number in tqdm(range(len(titles))):
-        title = titles[number]
-        proper = False
-        while proper == False:
-            try:
-                browser.open('https://sci-hub.se')
-                browser.select_form(nr=0)
-                proper = True
-            except:
-                print('sleep')
-                time.sleep(60)
-        # use form
-        browser['request'] = title
-        response = browser.submit()
-        links.append(browser.geturl())
-        print(browser.geturl())
-
-    cnt = 0
-    for idx, link in enumerate(links):
-        if link != 'https://sci-hub.se/':
-            cnt += 1
-            # change the value in the dataframe
-            titles_df.iloc[idx, 2] = link
-            # get the index of the row
-            index = titles_df[titles_df['link'] == link].index[0]
-            # change the value in the dataframe
-            publications_df.iloc[index, 2] = link
-
-    publications_df.to_csv(f'data/{institute}_publications_merged_ids_after_auto_title.csv')
-
-    titles_df = publications[publications.is_a_link == 0].reset_index(drop=True)
-    titles_df.to_csv(f'data/{institute}_titles.csv', index=False)
 
 
 
 def download_pdfs(institute):
-    save_path = rf'D:\data\ranking\{institute}/'
+    save_path = rf'D:\data\ranking\pdfs\'
 
-    publications_df = pd.read_csv(f'data/{institute}_publications_merged_ids_after_auto_title.csv')
+    publications_df = pd.read_csv(rf'D:\data\ranking\publication_links\{file}')
+
     publications_with_links = publications_df[publications_df.is_a_link == 1].reset_index(drop=True)
+
     sh = SciHub()
     failed = []
     automatic_pdf_download = []

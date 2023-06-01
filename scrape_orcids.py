@@ -166,6 +166,7 @@ def main():
     failed_df = pd.DataFrame({'uni': uni_list, 'failed': failed_list})
     failed_df.to_csv(r'D:\data\ranking\publication_links\failed.csv', index=False)
 
+
 if __name__ == '__main__':
     main()
 
