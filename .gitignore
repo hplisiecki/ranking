@@ -2,3 +2,4 @@ anonymized/**
 !anonymized/readme.md
 .obsidian
 client_secrets.json
+geckodriver.log
