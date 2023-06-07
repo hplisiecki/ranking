@@ -1,5 +1,3 @@
-import time
-import numpy as np
 import pandas as pd
 pd.options.mode.chained_assignment = None
 from tqdm import tqdm
@@ -63,13 +61,14 @@ institutes = df['uni_name'].value_counts().to_frame()
 evaluation = pd.read_csv('../data/institutions/evaluation_data.csv', index_col="uni_code")
 institutes = institutes.join(evaluation)
 
-# Save file with all institutes
-institutes.to_csv('../data/institutions/institutes_all.csv')
-
 # Select only evaluated institutes
 institutes_ev = institutes.dropna()
 
-# Selecting scientists who are connected to selected institutions
+# Save file with all institutes and evaluated
+institutes.to_csv('../data/institutions/institutes_all.csv')
+institutes_ev.to_csv('../data/institutions/institutes_ev.csv')
+
+# Selecting scientists who are connected to evaluated institutions
 df_selected    = df[df['uni_name'].isin(institutes_ev.index)]
 df_notselected = df[~df['id'].isin(df_selected.id)]
 
