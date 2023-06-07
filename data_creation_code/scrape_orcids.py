@@ -144,7 +144,7 @@ def scrape_orcids(links_df):
 
 def main():
 
-    data_dir = r'D:\data\ranking\data'
+    data_dir = r'../anonymized/data/institutions'
 
     failed_list = []
     uni_list = []
@@ -158,13 +158,13 @@ def main():
             continue
         failed, df = scrape_orcids(links_df)
 
-        df.to_csv(rf'D:\data\ranking\publication_links\{uni}.csv', index=False)
-        #
+        df.to_csv(rf'../data/publications/orcid/{uni}.csv', index=False)
+        
         uni_list.extend([uni] * len(failed))
         failed_list.extend(failed)
         print('failed', failed)
     failed_df = pd.DataFrame({'uni': uni_list, 'failed': failed_list})
-    failed_df.to_csv(r'D:\data\ranking\publication_links\failed.csv', index=False)
+    failed_df.to_csv(r'../data/publications/orcid/failed.csv', index=False)
 
 
 if __name__ == '__main__':

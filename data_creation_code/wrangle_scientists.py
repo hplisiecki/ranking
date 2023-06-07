@@ -51,8 +51,8 @@ unlisted = unlisted[['fullname', 'uni_name', 'is_a_main_job']].dropna()
 unlistedNamesOnly = unlisted[['fullname']].drop_duplicates()
 
 # Safe files
-unlisted.to_csv('../data/other/unlisted.csv')
-unlistedNamesOnly.to_csv('../data/other/unlisted_names_only.csv')
+unlisted.to_csv('../data/institutions/other/unlisted.csv')
+unlistedNamesOnly.to_csv('../data/institutions/other/unlisted_names_only.csv')
 
 df = temp_df
 
@@ -60,11 +60,11 @@ df = temp_df
 institutes = df['uni_name'].value_counts().to_frame()
 
 # Upload information about evaluation
-evaluation = pd.read_csv('../data/evaluation_data.csv', index_col="uni_code")
+evaluation = pd.read_csv('../data/institutions/evaluation_data.csv', index_col="uni_code")
 institutes = institutes.join(evaluation)
 
 # Save file with all institutes
-institutes.to_csv('../data/institutes_all.csv')
+institutes.to_csv('../data/institutions/institutes_all.csv')
 
 # Select only evaluated institutes
 institutes_ev = institutes.dropna()
@@ -74,7 +74,7 @@ df_selected    = df[df['uni_name'].isin(institutes_ev.index)]
 df_notselected = df[~df['id'].isin(df_selected.id)]
 
 # Safe notselecter to file
-df_notselected[['fullname','uni_name']].to_csv('../data/other/names.csv')
+df_notselected[['fullname','uni_name']].to_csv('../data/institutions/other/names.csv')
 
 selected=pd.DataFrame()
 
@@ -82,7 +82,7 @@ selected=pd.DataFrame()
 for i in institutes_ev.index:
     x=df_selected[df_selected.uni_name==i]
     selected=pd.concat([selected,x[['fullname','uni_name']]])
-    dir=os.path.join('../data', i)
+    dir=os.path.join('../data/institutions', i)
     if not os.path.exists(dir):
         os.makedirs(dir)
     x[['fullname']].to_csv('%s/names.csv' % dir)
@@ -98,5 +98,5 @@ WhereIsWally = pd.concat([
     unlistedNamesOnly[['fullname', 'file']]
 ])
 
-WhereIsWally.to_csv('../data/WhereIsWally.csv')
+WhereIsWally.to_csv('../data/institutions/WhereIsWally.csv')
 ##### ###
