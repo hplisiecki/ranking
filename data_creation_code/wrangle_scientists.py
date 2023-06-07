@@ -7,7 +7,7 @@ import os
 
 # scientist.csv is file downloaded from radon.pl database of registered scientist in Poland. 
 # Registration i obligatory for almost all active scienists, especialy those who works at Universities
-df = pd.read_csv('./data/scientists.csv')
+df = pd.read_csv('../data/scientists.csv')
 
 # Selecting columns & changing names to English
 df = df[['Id', 'Dane podstawowe - Imię', 'Dane podstawowe - Drugie imię',
@@ -17,6 +17,7 @@ df = df[['Id', 'Dane podstawowe - Imię', 'Dane podstawowe - Drugie imię',
 df.columns = ['id', 'name', 'second_name', 'pre_surname', 'surname', 
                 'uni_name', 'is_a_main_job']
 
+# change names for interoperability
 df=df.replace({'uni_name':'im. '},{'uni_name':''},regex=True)
 df=df.replace({'uni_name':'sp. z o.o. '},{'uni_name':''},regex=True)
 df=df.replace({'uni_name':' '},{'uni_name':'_'},regex=True)
@@ -44,41 +45,58 @@ for index, row in df.iterrows():
 df['fullname'] = names
 
 # Splitting into those, who declared "main job" and others
-temp_df=df[df['is_a_main_job']=="Tak"]
-unlisted=df[~df['id'].isin(temp_df.id)]
-unlisted[['fullname', 'uni_name', 'is_a_main_job']].to_csv('./data/other/unlisted.csv')
-df=temp_df
+temp_df  = df[df['is_a_main_job']=="Tak"]
+unlisted = df[~df['id'].isin(temp_df.id)]
+unlisted = unlisted[['fullname', 'uni_name', 'is_a_main_job']].dropna()
+unlistedNamesOnly = unlisted[['fullname']].drop_duplicates()
 
-# Selecting institutes with at least 25 listed scientists
-institutes = df['uni_name'].value_counts()
-institutes = institutes[institutes > 24]
-institutes.to_csv('./data/institutes.csv')
+# Safe files
+unlisted.to_csv('../data/other/unlisted.csv')
+unlistedNamesOnly.to_csv('../data/other/unlisted_names_only.csv')
+
+df = temp_df
+
+# Creating dataset of institutions
+institutes = df['uni_name'].value_counts().to_frame()
+
+# Upload information about evaluation
+evaluation = pd.read_csv('../data/evaluation_data.csv', index_col="uni_code")
+institutes = institutes.join(evaluation)
+
+# Save file with all institutes
+institutes.to_csv('../data/institutes_all.csv')
+
+# Select only evaluated institutes
+institutes_ev = institutes.dropna()
 
 # Selecting scientists who are connected to selected institutions
-df_selected=df[df['uni_name'].isin(institutes.index)]
-df_notselected=df[~df['id'].isin(df_selected.id)]
-df_notselected[['fullname','uni_name']].to_csv('./data/other/names.csv')
+df_selected    = df[df['uni_name'].isin(institutes_ev.index)]
+df_notselected = df[~df['id'].isin(df_selected.id)]
+
+# Safe notselecter to file
+df_notselected[['fullname','uni_name']].to_csv('../data/other/names.csv')
 
 selected=pd.DataFrame()
+
 # Making files for selected scientists
-for i in institutes.index:
+for i in institutes_ev.index:
     x=df_selected[df_selected.uni_name==i]
     selected=pd.concat([selected,x[['fullname','uni_name']]])
-    dir=os.path.join('data', i)
+    dir=os.path.join('../data', i)
     if not os.path.exists(dir):
         os.makedirs(dir)
     x[['fullname']].to_csv('%s/names.csv' % dir)
 
 # Making Where is Wally
-selected['file']='selected'
-df_notselected['file']='other-names'    
-unlisted['file']="other-unlisted"
+selected['file'] = 'selected'
+df_notselected['file'] = 'other-names'    
+unlistedNamesOnly['file']=  "other-unlisted"
 
 WhereIsWally = pd.concat([
-    selected,
-    df_notselected[['fullname','uni_name','file']],
-    unlisted[['fullname', 'uni_name', 'file','is_a_main_job']]
+    selected[['fullname','file', 'uni_name']],
+    df_notselected[['fullname','file']],
+    unlistedNamesOnly[['fullname', 'file']]
 ])
 
-WhereIsWally.to_csv('./data/WhereIsWally.csv')
+WhereIsWally.to_csv('../data/WhereIsWally.csv')
 ##### ###

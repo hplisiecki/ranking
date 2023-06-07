@@ -4,7 +4,7 @@ import os
 
 emailList = pd.DataFrame(columns=['fullname', 'institution', 'email1', 'email2'])
 
-for institution in os.walk('anonymized/data'):
+for institution in os.walk('../anonymized/data'):
     for file in institution[2]:
         if file == 'names.xlsx':
             dir = os.path.join(institution[0], file)
@@ -22,4 +22,6 @@ for institution in os.walk('anonymized/data'):
 
 emailList.reset_index
 y = pd.DataFrame(emailList.index)
-emailList.to_csv('./anonymized/emailList.csv')
+
+
+emailList.to_csv('../anonymized/survey/emailList.csv')
