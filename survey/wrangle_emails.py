@@ -21,7 +21,4 @@ for institution in os.walk('../anonymized/data'):
             emailList = pd.concat([emailList, df])
 
 emailList.reset_index
-y = pd.DataFrame(emailList.index)
-
-
 emailList.to_csv('../anonymized/survey/emailList.csv')

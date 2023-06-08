@@ -8,8 +8,7 @@ import pandas as pd
 import os
 from bs4 import BeautifulSoup as bs
 
-def get_doi_from_html(html):
-    date_range = (2017, 2022)
+def get_doi_from_html(html, date_range = (2017, 2022)):
     longer = False
     soup = bs(html, 'html.parser')
     # find strong
@@ -18,8 +17,10 @@ def get_doi_from_html(html):
 
     # get all divs with class 'panel-data-container'
     divs = soup.find_all('div', {'class': 'panel-data-container'})
+    
     # get all divs containing 'Journal article
     divs = [div for div in divs if 'Journal article' in str(div)]
+    
     # get all in every div with class 'general-data' and not class 'general-data ng-star-inserted'
     d_divs = [div.find_all('div', {'class': 'general-data'}) for div in divs]
     cleaned = []
@@ -28,6 +29,7 @@ def get_doi_from_html(html):
             if 'general-data ng-star-inserted' not in str(d):
                 cleaned.append(d)
     dates = [find_date(str(div))[0] for div in cleaned]
+    
     # check if there is a date lower than 2017
     if 'of' in works:
         if not any([date < str(date_range[0]) for date in dates]):
@@ -45,29 +47,34 @@ def get_doi_from_html(html):
             limited_dates.append(date)
 
     # find http links in every div
+    titles = []
     links = []
     journals = []
     for div in divs_in_range:
         a = div.find_all('a')
         link = 'empty'
+        
+        # get link
         for i in a:
             if 'http' in str(i) and 'doi' in str(i):
                 # extract link
                 link = str(i).split('href="')[1].split('"')[0]
 
-        if link == 'empty':
-            title_container = div.parent.parent.parent.previousSibling
-            # get h2
-            link = title_container.text  # get title
+        
+        # get title
+        title_container = div.parent.parent.parent.previousSibling
+        # get h2
+        title = title_container.text
 
         # find 'ngcontent-iyt-c176=' div
         b = div.find_all('div', {'class': 'general-data ng-star-inserted'})
         journal = b[0].text.replace('\n', '').strip()
 
         links.append(link)
+        titles.append(title)
         journals.append(journal)
 
-    return links, longer, journals, limited_dates
+    return links, titles, longer, journals, limited_dates
 
 def find_date(string):
     pattern = re.compile(r'\d{4}-\d{2}-\d{2}')
@@ -102,6 +109,7 @@ def scrape_orcids(links_df):
     driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
     links_list = []
     names_list = []
+    titles_list = []
     orcids_list = []
     failed = []
     dates_list = []
@@ -111,7 +119,7 @@ def scrape_orcids(links_df):
             driver.get(orcid)
             time.sleep(5)
             html = driver.page_source
-            links, longer, journals, limited_dates = get_doi_from_html(html)
+            links, titles, longer, journals, limited_dates = get_doi_from_html(html)
 
             if longer:
                 try:
@@ -120,13 +128,14 @@ def scrape_orcids(links_df):
                     button.click()
                     time.sleep(5)
                     html = driver.page_source
-                    more_links, longer, journals, limited_dates = get_doi_from_html(html)
+                    more_links, titles, longer, journals, limited_dates = get_doi_from_html(html)
                     links.extend(more_links)
 
                 except:
                     pass
 
             links_list.extend(links)
+            titles_list.extend(titles)
             names_list.extend([name] * len(links))
             orcids_list.extend([orcid] * len(links))
             dates_list.extend(limited_dates)
@@ -136,37 +145,39 @@ def scrape_orcids(links_df):
             failed.append(orcid)
 
     # save a = div.parent.parent.parent.previousSibling
-    df = pd.DataFrame({'name': names_list, 'orcid': orcids_list, 'link': links_list, 'date': dates_list, 'journal': journals_list})
+    df = pd.DataFrame({'name': names_list, 'orcid': orcids_list, 'link': links_list, 'title': titles_list,'date': dates_list, 'journal': journals_list})
 
 
     return failed, df
 
+def main(uni_name = None, data_dir = r'../anonymized/data/institutions', export_dir = r'../data/publications/orcid', format = 'names.xlsx'):
 
-def main():
-
-    data_dir = r'../anonymized/data/institutions'
+    if uni_name == None:
+        directories = os.listdir(data_dir)
+    else:
+        directories = [uni_name]
 
     failed_list = []
     uni_list = []
 
-    for uni in tqdm(os.listdir(data_dir)):
+    for uni in tqdm(directories):
         print(uni)
         try:
-            links_df = pd.read_excel(os.path.join(data_dir, uni, 'names.xlsx'))
+            links_df = pd.read_excel(os.path.join(data_dir, uni, format))
         except:
             print(f"Failed to fetch names for {uni}.")
             continue
         failed, df = scrape_orcids(links_df)
 
-        df.to_csv(rf'../data/publications/orcid/{uni}.csv', index=False)
+        df.to_csv(os.path.join(export_dir, rf'{uni}.csv'), index=False)
         
         uni_list.extend([uni] * len(failed))
         failed_list.extend(failed)
         print('failed', failed)
     failed_df = pd.DataFrame({'uni': uni_list, 'failed': failed_list})
-    failed_df.to_csv(r'../data/publications/orcid/failed.csv', index=False)
+    failed_df.to_csv(os.path.join(export_dir, 'failed.csv'), index=False)
 
 
 if __name__ == '__main__':
-    main()
+    main('')
 
