@@ -179,5 +179,5 @@ def main(uni_name = None, data_dir = r'../anonymized/data/institutions', export_
 
 
 if __name__ == '__main__':
-    main('')
+    main()
 
