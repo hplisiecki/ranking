@@ -1,2 +1,2 @@
-This is a folder for anonymized data.
-Some part of code can provide to it, but it will contain only readme.md on github.
+This is a folder for anonymized data. The reason for hiding is that there is some personal data, like emails of researchers, which should not be available for public without a proper reason. This folder is a mirrored version of 'data' folder in project's Google Drive.
+Some part of code can reference to it, but its GitHub version will contain only readme.md.
