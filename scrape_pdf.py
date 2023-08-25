@@ -1,4 +1,4 @@
-import pandas as pd
+
 
 def merge_and_make_ids(institute):
     orcid_df = pd.read_csv(f'data/swps_publication_links.csv')
@@ -82,7 +82,7 @@ def merge_and_make_ids(institute):
 
 
 def download_pdfs(institute):
-    save_path = rf'D:\data\ranking\pdfs'
+    save_path = rf'D:\data\ranking\pdfs\'
 
     publications_df = pd.read_csv(rf'D:\data\ranking\publication_links\{file}')
 
