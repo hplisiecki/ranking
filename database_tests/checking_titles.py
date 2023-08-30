@@ -20,9 +20,14 @@ for uni in unis:
     # load links
     links = pd.read_csv(os.path.join(links_path, uni))
     new_links = pd.read_csv(os.path.join(new_links, uni))
-
-    new_links = new_links[['link', 'title', 'id']]
-
-    links = links.merge(new_links, on='id', how='outer')
     break
+    new_links = new_links[['name', 'link', 'title', 'id']]
+    # merge on link and name
+
+    links = links.merge(new_links, on=['name', 'link'], how='outer')
+    break
+
+print(len(links[links['orcid'].isna()]))
+
+print(len(links[links['title'].isna()]))
 
