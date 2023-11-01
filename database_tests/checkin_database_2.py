@@ -10,7 +10,7 @@ old_uni_list = ['Akademia_Ignatianum_w_Krakowie.csv', 'Instytut_Psychologii_Pols
           'Uniwersytet_Kazimierza_Wielkiego_w_Bydgoszczy.csv', 'Uniwersytet_Marii_Curie-Skłodowskiej_w_Lublinie.csv', 'Uniwersytet_Pedagogiczny_Komisji_Edukacji_Narodowej_w_Krakowie.csv',
           'Uniwersytet_Szczeciński.csv', 'Uniwersytet_Warszawski.csv', 'Uniwersytet_Wrocławski.csv', 'Uniwersytet_Łódzki.csv', 'Uniwersytet_Śląski_w_Katowicach.csv']
 
-old_uni_list = ['Uniwersytet_Gdański.csv']
+# old_uni_list = ['Uniwersytet_Gdański.csv']
 
 
 dir_new = r'..\data\publications\orcid'
