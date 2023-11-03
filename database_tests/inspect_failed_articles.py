@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+import PyPDF2
 
 dir = r'D:\data\ranking\pdfs\failed_pdf'
 save_path = r'D:\data\ranking\pdfs'
