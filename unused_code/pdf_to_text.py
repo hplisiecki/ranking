@@ -4,20 +4,25 @@ import PyPDF2
 
 pdf_dir = r'D:\data\ranking\swps'
 
+url = r'D:\data\ranking\Kinga_Wytrychiewicz_2.pdf'
 
-for idx, file in enumerate(os.listdir(pdf_dir)):
-    if '.pdf' in file:
-        pdfFileObj = open(os.path.join(pdf_dir, file), 'rb')
-        pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
-        print(pdfReader.numPages)
-        # text = []
-        text = ''
-        for page in range(pdfReader.numPages):
-            pageObj = pdfReader.getPage(page)
-            # text.append(pageObj.extractText())
-            text += pageObj.extractText()
-        # if idx == 8:
-        break
+url = r'D:\data\ranking\pdfs\Akademia_Ignatianum_w_Krakowie\Łukasz_Michalczyk_4.pdf'
+def pdf_to_text(url):
+    pdfFileObj = open(url, 'rb')
+    pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
+    print(pdfReader.numPages)
+    # text = []
+    text = ''
+    for page in range(pdfReader.numPages):
+        pageObj = pdfReader.getPage(page)
+        # text.append(pageObj.extractText())
+        text += pageObj.extractText()
+    # if idx == 8:
+    return text
+
+text = pdf_to_text(url)
+
+
 # replace the \ in string with \\
 raw_text = text.encode('unicode_escape').decode('utf-8')
 import re
