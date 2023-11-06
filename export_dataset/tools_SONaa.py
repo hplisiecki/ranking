@@ -45,5 +45,3 @@ def open_SONaa(file):
     json_file = open(file, encoding="utf8")
     List_of_articles = json.load(json_file)
     return(List_of_articles)
-
-x = open_SONaa(".\exportable_dataset\List_of_articles.SONaa")
