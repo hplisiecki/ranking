@@ -6,6 +6,7 @@ def short_DOI(DOI):
         x = x.replace('/', '_')
         return(x)
     except:
+        print("__hjuston, mamy problem"+DOI)
         return("__hjuston, mamy problem"+DOI)
 
 def long_DOI(DOI):
@@ -15,28 +16,21 @@ def long_DOI(DOI):
     return(x)
 
 
-
-
-def create_identificator(row, DOI = "link", title = "title"):
+# Create ID
+def create_Article_ID(row, DOI = "link", title = "title", joural = 'journal'):
     if row[DOI] != "empty":
         return(short_DOI(row[DOI]))
     else:
-        t = row[title]
-        l = len(t)
-        if l>24:
-            return(t[0:20])
-        elif l==0:
-            return("no title")
-        else:
-            return(t[0:l])
-        
+        t = row[title]+str(row[joural])
+        return(hash(t))
+  
 
 #read_SONaa
-def read_SONaa():
+def read_SONaa(file):
     import pandas as pd
     import json
 
-    json_file = open("List_of_articles.SONaa", encoding="utf8")
+    json_file = open(file, encoding="utf8")
     List_of_articles = json.load(json_file)
 
     df = pd.DataFrame(List_of_articles)
@@ -44,3 +38,12 @@ def read_SONaa():
     return(df)
 
 
+
+
+def open_SONaa(file):
+    import json
+    json_file = open(file, encoding="utf8")
+    List_of_articles = json.load(json_file)
+    return(List_of_articles)
+
+x = open_SONaa(".\exportable_dataset\List_of_articles.SONaa")

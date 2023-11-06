@@ -1,17 +1,16 @@
 import pandas as pd
 import os
 import json
-from tqdm import tqdm
+from tools_SONaa import *
 
 # to do
-# add other information
-# remove brackets from 'fullname'
+# add other information to authors_export
 
 ## this part is alternative to wrangle_scientists.py ##
-
-def author_export(source = '../data/scientists.csv', dest = '../exportable_dataset/List_of_authors.csv'):
+def author_export(source = '../data/scientists.csv', dest = './exportable_dataset'):
     
-    df = pd.read_csv(file)
+    df = pd.read_csv(source)
+    
     # Selecting columns & changing names to English
     df = df[['Id', 'Dane podstawowe - Imię', 'Dane podstawowe - Drugie imię', 'Dane podstawowe - Przedrostek nazwiska', 'Dane podstawowe - Nazwisko', 
                 'Zatrudnienie - Nazwa','Zatrudnienie - Podstawowe miejsce pracy', "Zatrudnienie - Oświadczone dyscypliny", "Stopnie naukowe - Stopień naukowy", "Stopnie naukowe - Rok uzyskania stopnia"]]
@@ -23,10 +22,8 @@ def author_export(source = '../data/scientists.csv', dest = '../exportable_datas
     df=df.replace({'uni_name':'im. '},{'uni_name':''},regex=True)
     df=df.replace({'uni_name':'sp. z o.o. '},{'uni_name':''},regex=True)
     df=df.replace({'uni_name':' '},{'uni_name':'_'},regex=True)
-
+    
     authors_raw = df
-
-    b = 0
 
     authors = pd.DataFrame()
 
@@ -62,60 +59,79 @@ def author_export(source = '../data/scientists.csv', dest = '../exportable_datas
             fullname.append(surname)
 
         names.append(' '.join(fullname))
-        author['fullname'] = names
+        author['fullname'] = names[0]
 
         authors = pd.concat([authors,author.to_frame().T])
                 
-    authors.to_csv(dest)
-
-# def add_articles_to_dataset(articles_source ="../data/publications/orcid", files_source = None, dest="../exportable_dataset/List_of_articles"):
-dest = ''
-
-try:
-    json_file = open("List_of_articles.SONaa", encoding="utf8")
-    List_of_articles = json.load(json_file)
-except:
-    List_of_articles = []
+    authors.to_csv(dest+"/List_of_authors.csv")
 
 
+# import orcid's article list
+def import_orcid_article_list(source =  "../data/publications/orcid", save_as_csv = False):
 
-
-
-
-articles_source = "../data/publications/orcid"
-
-
-
-
-
-files = os.listdir(articles_source)
-
-for file in files:
-    # skip certain files
-    if file in ['export_to_automated', 'export_to_manual', 'failed.csv']:
-        continue
+    files = os.listdir(source)
+    df = pd.DataFrame()
     
-    # read file with articles
-    uni_authors = pd.read_csv(articles_source+"/"+file)
+    for file in files:
+        # skip certain files
+        if file in ['export_to_automated', 'export_to_manual', 'failed.csv']:
+            continue
+        
+        # read file with articles
+        uni_authors = pd.read_csv(source+"/"+file)
+        
+        df = pd.concat([df, uni_authors])
+
+    Article_ID = []
+    for i, row in (df.iterrows()):
+        y = create_Article_ID(row)
+        Article_ID += [y]
+
+    df.rename(columns = {'id':'filename', 'link':'doi'}, inplace = True)
+    df['Article_ID'] = Article_ID
+
+    if save_as_csv == True:
+        df.to_csv('raw_article_list.csv')
+
+        duplicated = df[df[['name', 'Article_ID']].duplicated(keep=False)]
+        duplicated.to_csv('duplicates.csv')
+
+    return(df)
+
+
+def create_SONaa(raw_article_list, existing_file = "SONaa.py", save_duplicated_to_csv = False, dest = './exportable_dataset'):
+
+    if isinstance(raw_article_list, str):
+        raw_article_list = pd.read_csv(raw_article_list)
+
+    try:
+        SONaa = open_SONaa(existing_file)
+    except:
+        SONaa = {}
+        
+        
+    duplicated = []
+    n=0
+    for i, row in raw_article_list.iterrows():
+        if row['Article_ID'] in SONaa.keys():
+            if row['name'] in SONaa[row['Article_ID']]['authors']:
+                duplicated += [row]
+            else:
+                SONaa[row['Article_ID']]['authors'] += row['name']
+
+        else:
+            article = {
+                'authors': [row["name"]],
+                'title': row["title"],
+                'doi': row["doi"],
+                'date': row['date']}
+
+            SONaa.update({row['Article_ID']: article})
     
-    for i, row in tqdm(uni_authors.iterrows()):
-
-        # if there is no doi, check titles
-        
-            # if yes, check author
-            # if diferent, add new
-        
-        
-        # if not exist, create one
-        article = {'doi':row["link"],
-             'title':row["title"],
-             'date':row["date"],
-             'journal':row["journal"],
-             'authors':[row['name']]}
-
-        List_of_articles.append(article)
-
-with open('../exportable_dataset/List_of_articles.SONaa', 'w', encoding='utf-8') as f:
-    json.dump(List_of_articles, f, ensure_ascii=False, indent=4)
-
-# add_articles_to_dataset()
+    destination = dest + '/List_of_articles.SONaa'
+    with open(destination, 'w', encoding='utf-8') as f:
+        json.dump(SONaa, f, ensure_ascii=False, indent=4)
+    # create DF with articles' properties
+    if save_duplicated_to_csv:
+        duplicated = pd.DataFrame(duplicated)
+        duplicated.to_csv('duplicated_SONaa.csv')
