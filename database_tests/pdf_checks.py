@@ -28,6 +28,7 @@ for uni in unis:
     not_found = [id for id in links.id.values if str(id) + '.pdf' not in files]
     not_found_dict[uni.replace('.csv', '')] = not_found
     stats_dict[uni.replace('.csv', '')] = len(not_found) / len(links.id.values)
+    break
 
 
 
