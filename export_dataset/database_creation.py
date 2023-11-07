@@ -2,6 +2,7 @@ import pandas as pd
 import os
 import json
 from tools_SONaa import *
+from glob import glob
 
 # to do
 # add other information to authors_export
@@ -63,11 +64,11 @@ def author_export(source = '../data/scientists.csv', dest = './exportable_datase
 
         authors = pd.concat([authors,author.to_frame().T])
                 
-    authors.to_csv(dest+"/List_of_authors.csv")
+    authors.to_csv(dest+"/List_of_authors.csv", index=False)
 
 
 # import orcid's article list
-def import_orcid_article_list(source =  "../data/publications/orcid", save_as_csv = False):
+def import_orcid_article_list(source = "../data/publications/orcid", save_as_csv = False):
 
     files = os.listdir(source)
     df = pd.DataFrame()
@@ -94,18 +95,21 @@ def import_orcid_article_list(source =  "../data/publications/orcid", save_as_cs
         df.to_csv('raw_article_list.csv')
 
         duplicated = df[df[['name', 'Article_ID']].duplicated(keep=False)]
-        duplicated.to_csv('duplicates.csv')
+        duplicated.to_csv('duplicates.csv', index=False)
 
     return(df)
 
 
-def create_SONaa(raw_article_list, existing_file = "SONaa.py", save_duplicated_to_csv = False, dest = './exportable_dataset'):
+def create_SONaa(raw_article_list = 'raw_article_list.csv', 
+                 existing_SONaa = "exportable_dataset\List_of_articles.SONaa", 
+                 save_duplicated_to_csv = False, 
+                 dest = './exportable_dataset'):
 
     if isinstance(raw_article_list, str):
         raw_article_list = pd.read_csv(raw_article_list)
 
     try:
-        SONaa = open_SONaa(existing_file)
+        SONaa = open_SONaa(existing_SONaa)
     except:
         SONaa = {}
         
@@ -134,4 +138,41 @@ def create_SONaa(raw_article_list, existing_file = "SONaa.py", save_duplicated_t
     # create DF with articles' properties
     if save_duplicated_to_csv:
         duplicated = pd.DataFrame(duplicated)
-        duplicated.to_csv('duplicated_SONaa.csv')
+        duplicated.to_csv('duplicated_SONaa.csv', index=False)
+
+
+def create_article_base(raw_article_list = 'raw_article_list.csv', 
+                        existing_SONaa = "exportable_dataset\List_of_articles.SONaa", 
+                        source_path = "S:/My Drive/ranking_instytutow/data_completion/articles/*/*/*.pdf", 
+                        dest = 'temp_export', 
+                        save_missing_to_csv = True):
+    
+    if isinstance(raw_article_list, str):
+        raw_article_list = pd.read_csv(raw_article_list)
+    
+    SONaa = open_SONaa(existing_SONaa)
+    
+    # create list of existing files
+    list_of_files = pd.DataFrame()
+    temp_list = glob(source_path, recursive = True)
+    list_of_files['path'] = temp_list
+    list_of_files['file'] = [path.split('\\')[-1] for path in temp_list]
+
+    missing_files = pd.DataFrame()
+    
+    # Find file for every article
+    for Article_ID in SONaa.keys():
+        article = raw_article_list[raw_article_list['Article_ID'] == Article_ID]
+        
+        for filename in article['filename']:
+            if list_of_files['file'].str.contains(filename).any():
+                no_file = False
+                break
+            else:
+                missing_files = pd.concat([missing_files, article])
+            
+    
+    if save_missing_to_csv:
+        missing_files = pd.DataFrame(missing_files)
+        missing_files.to_csv('missing_files.csv', index=False)
+

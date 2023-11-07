@@ -15,7 +15,6 @@ def long_DOI(DOI):
     x = 'https://doi.org/' + x
     return(x)
 
-
 # Create ID
 def create_Article_ID(row, DOI = "link", title = "title", joural = 'journal'):
     if row[DOI] != "empty":
@@ -24,21 +23,6 @@ def create_Article_ID(row, DOI = "link", title = "title", joural = 'journal'):
         t = row[title]+str(row[joural])
         return(hash(t))
   
-
-#read_SONaa
-def read_SONaa(file):
-    import pandas as pd
-    import json
-
-    json_file = open(file, encoding="utf8")
-    List_of_articles = json.load(json_file)
-
-    df = pd.DataFrame(List_of_articles)
-    
-    return(df)
-
-
-
 
 def open_SONaa(file):
     import json
