@@ -69,8 +69,8 @@ def download_all():
             driver.quit()
             continue
 
-        # if os.path.exists(os.path.join(save_path, 'failed_pdf', file)):
-        #     failed = pd.read_csv(os.path.join(save_path, 'failed_pdf', file))
+        if os.path.exists(os.path.join(save_path, 'failed_pdf', file)):
+            failed = pd.read_csv(os.path.join(save_path, 'failed_pdf', file))
 
         links = pd.read_csv(fr'D:\PycharmProjects\ranking\data\publications\orcid\export_to_automated\{file}')
 
