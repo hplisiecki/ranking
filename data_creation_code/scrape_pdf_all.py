@@ -175,31 +175,12 @@ def download_all():
             break
 
 
-
-# from selenium.webdriver.firefox.service import Service as FirefoxService
-# from webdriver_manager.firefox import GeckoDriverManager
-# from selenium.webdriver.support import expected_conditions as EC
-# from selenium.webdriver.support.ui import WebDriverWait
-# from selenium import webdriver
-# import pandas as pd
-# import os
-# import time
-# import os
-# import glob
-# from tqdm import tqdm
-# from selenium.webdriver.common.by import By
-# import shutil
-#
-#
-# url = 'https://sci-hub.se/downloads/2021-05-27/49/jakubowska2021.pdf?download=true'
-#
-# options = webdriver.FirefoxOptions()
-# options.add_argument('--no-sandbox')
-# options.add_argument('user-agent=Mozilla/5.0 (Windows NT x.y; rv:10.0) Gecko/20100101 Firefox/10.0')
-# driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
-#
-# driver.get(url)
-# WebDriverWait(driver, 10).until(lambda d: d.execute_script("return document.readyState") == "complete")
-# # check if '404 Not Found' is on the page
-# if '404 Not Found' in driver.page_source:
-#     print('404')
+if __name__ == '__main__':
+    while True:
+        try:
+            download_all()
+            break
+        except:
+            print("Error. Restarting in 30 seconds.")
+            time.sleep(30)
+            continue
