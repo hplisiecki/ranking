@@ -17,6 +17,10 @@ def long_DOI(DOI):
 
 # Create ID
 def create_Article_ID(row, DOI = "link", title = "title", joural = 'journal'):
+    if isinstance(row, str):
+        return(short_DOI(row))       
+
+    
     if row[DOI] != "empty":
         return(short_DOI(row[DOI]))
     else:
