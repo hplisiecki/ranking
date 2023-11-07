@@ -20,8 +20,7 @@ def create_Article_ID(row, DOI = "link", title = "title", joural = 'journal'):
     if isinstance(row, str):
         return(short_DOI(row))       
 
-    
-    if row[DOI] != "empty":
+    elif row[DOI] != "empty":
         return(short_DOI(row[DOI]))
     else:
         t = row[title]+str(row[joural])
