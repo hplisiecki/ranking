@@ -15,8 +15,12 @@ import winsound
 import requests
 save_path = r'D:\data\ranking\pdfs'
 downloads_url = r'C:\Users\hplis\Downloads'
-latest_file = r'C:\Users\hplis\Downloads\latest.txt'
-source_dir = r'D:\data\ranking\publication_links\new'
+files = glob.glob(os.path.join(downloads_url, "*"))
+
+# find the most recently downloaded file
+sorted_files = sorted(files, key=os.path.getctime)
+
+latest_file = sorted_files[-1]source_dir = r'D:\data\ranking\publication_links\new'
 
 def check_archive(driver, url):
     if 'archive' not in driver.page_source:
@@ -146,7 +150,7 @@ for file in os.listdir(source_dir):
             sorted_files = sorted(files, key=os.path.getctime)
             temp_file = sorted_files[-1]
             second_latest = sorted_files[-2]
-            while 'latest.txt' in temp_file or '.pdf' != temp_file[-4:] or 'latest.txt' not in second_latest:
+            while latest_file == temp_file or '.pdf' != temp_file[-4:] or latest_file != second_latest:
                 time.sleep(1)
                 files = glob.glob(os.path.join(downloads_url, "*"))
 
