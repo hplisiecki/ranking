@@ -10,22 +10,73 @@ old_uni_list = ['Akademia_Ignatianum_w_Krakowie.csv', 'Instytut_Psychologii_Pols
           'Uniwersytet_Kazimierza_Wielkiego_w_Bydgoszczy.csv', 'Uniwersytet_Marii_Curie-Skłodowskiej_w_Lublinie.csv', 'Uniwersytet_Pedagogiczny_Komisji_Edukacji_Narodowej_w_Krakowie.csv',
           'Uniwersytet_Szczeciński.csv', 'Uniwersytet_Warszawski.csv', 'Uniwersytet_Wrocławski.csv', 'Uniwersytet_Łódzki.csv', 'Uniwersytet_Śląski_w_Katowicach.csv']
 
-# old_uni_list = ['Uniwersytet_Gdański.csv']
 
 
-dir_new = r'..\data\publications\orcid'
-dir_old = r'publication_links_old'
+def checking_old_database(old_uni_list):
+    dir_new = r'..\data\publications\orcid'
+    dir_old = r'publication_links_old'
 
-for uni in old_uni_list:
-    file_new = pd.read_csv(os.path.join(dir_new, uni))
-    file_old = pd.read_csv(os.path.join(dir_old, uni))
-    file_compare = file_old    
-    
+    for uni in old_uni_list:
+        file_new = pd.read_csv(os.path.join(dir_new, uni))
+        file_old = pd.read_csv(os.path.join(dir_old, uni))
+        file_compare = file_old    
+        
+        overwrite = pd.DataFrame()
+        
+        missing_records = pd.DataFrame()
+        unpaired_record = pd.DataFrame()
+        
+        for i, row in file_new.iterrows():
+            x = file_old[file_old['id'] == row['id']]
+            if x.empty:
+                missing_records = missing_records.append(row)
+            else:
+                x = x.squeeze()
+                if row['link'] == 'empty':
+                    if row['title'] != x['link']:
+                        unpaired_record = unpaired_record.append(row)
+                        unpaired_record = unpaired_record.append(x)
+
+                else:
+                    if row['link'] != x['link']:
+                        y = file_compare[file_compare['link'] == row['link']]
+                        z = y[y['name'] == row['name']]
+                        z = z.squeeze()
+                        if not z.empty and row['link'] == z['link']:
+                            row['old_id'] = z['id']
+                            overwrite = overwrite.append(row)
+                        else:
+                            unpaired_record = unpaired_record.append(row)
+                            unpaired_record = unpaired_record.append(x)
+
+
+                file_old = file_old[file_old['id'] != row['id']]
+
+        # save file
+        uni = uni.replace('.csv', '')
+        
+        if not file_old.empty:
+            file_old.to_csv(rf'problems\{uni}_old_unpaired.csv')
+        if not unpaired_record.empty:
+            unpaired_record.to_csv(rf'problems\{uni}_wrong_paired.csv')
+        if not missing_records.empty:
+            missing_records.to_csv(rf'problems\{uni}_new_unpaired.csv')
+        if not overwrite.empty:
+            overwrite.to_csv(rf'problems\{uni}_overwrite.csv')
+        
+def SWPS_check():
+    SWPS = 'SWPS_Uniwersytet_Humanistycznospołeczny_z_siedzibą_w_Warszawie_titles.xlsx'
+    dir_new = r'../data/publications/orcid/export_to_manual/'+ SWPS
+    dir_old = r'publication_links_old/swps_manual.csv'
+
+    file_new = pd.read_excel(dir_new)
+    file_old = pd.read_csv(dir_old)
+    file_compare = file_old
     overwrite = pd.DataFrame()
-    
+
     missing_records = pd.DataFrame()
     unpaired_record = pd.DataFrame()
-    
+
     for i, row in file_new.iterrows():
         x = file_old[file_old['id'] == row['id']]
         if x.empty:
@@ -52,9 +103,7 @@ for uni in old_uni_list:
 
             file_old = file_old[file_old['id'] != row['id']]
 
-    # save file
-    uni = uni.replace('.csv', '')
-    
+    uni = 'SWPS'
     if not file_old.empty:
         file_old.to_csv(rf'problems\{uni}_old_unpaired.csv')
     if not unpaired_record.empty:
@@ -63,4 +112,3 @@ for uni in old_uni_list:
         missing_records.to_csv(rf'problems\{uni}_new_unpaired.csv')
     if not overwrite.empty:
         overwrite.to_csv(rf'problems\{uni}_overwrite.csv')
-    
