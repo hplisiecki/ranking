@@ -19,5 +19,24 @@ with open(r'D:\PycharmProjects\ranking\data\publications\orcid\automated_doi\all
 
 
 
+############# SWPS ################
+import os
+import pandas as pd
+import pickle
 
+df = pd.read_csv(r'D:\PycharmProjects\ranking\data\publications\orcid\export_to_automated\SWPS_Uniwersytet_Humanistycznospołeczny_z_siedzibą_w_Warszawie.csv')
+links = list(df.link.values)
+
+links_list = list(set(links))
+
+# load
+with open(r'D:\PycharmProjects\ranking\data\publications\orcid\automated_doi\all_links_without_swps.pkl', 'rb') as f:
+    links_list_rest = pickle.load(f)
+
+links_list = [link for link in links_list if link not in links_list_rest]
+
+
+# save
+with open(r'D:\PycharmProjects\ranking\data\publications\orcid\automated_doi\swps_links.pkl', 'wb') as f:
+    pickle.dump(links_list, f)
 

@@ -71,7 +71,7 @@ def download_all():
     LATEST_FILE = sorted_files[-1]
 
     # load
-    with open(r'D:\PycharmProjects\ranking\data\publications\orcid\automated_doi\all_links_without_swps.pkl', 'rb') as f:
+    with open(r'D:\PycharmProjects\ranking\data\publications\orcid\automated_doi\swps_links.pkl', 'rb') as f:
         # load the list of links
         links_list = pickle.load(f)
 
