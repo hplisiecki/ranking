@@ -13,7 +13,6 @@ from selenium.webdriver.common.by import By
 import shutil
 
 
-
 def download_all():
     save_path = r'D:\data\ranking\pdfs'
     downloads_url = r'C:\Users\hplis\Downloads'
