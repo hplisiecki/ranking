@@ -95,7 +95,7 @@ def import_orcid_article_list(source = "../data/publications/orcid", save_as_csv
         df.to_csv('raw_article_list.csv')
 
         duplicated = df[df[['name', 'Article_ID']].duplicated(keep=False)]
-        duplicated.to_csv('duplicates.csv', index=False)
+        duplicated.to_csv('duplicates_import_orcid.csv', index=False)
 
     return(df)
 
@@ -115,13 +115,13 @@ def create_SONaa(raw_article_list = 'raw_article_list.csv',
         
         
     duplicated = []
-    n=0
+
     for i, row in raw_article_list.iterrows():
         if row['Article_ID'] in SONaa.keys():
             if row['name'] in SONaa[row['Article_ID']]['authors']:
                 duplicated += [row]
             else:
-                SONaa[row['Article_ID']]['authors'] += row['name']
+                SONaa[row['Article_ID']]['authors'] += [row['name']]
 
         else:
             article = {
@@ -166,7 +166,6 @@ def create_article_base(raw_article_list = 'raw_article_list.csv',
         
         for filename in article['filename']:
             if list_of_files['file'].str.contains(filename).any():
-                no_file = False
                 break
             else:
                 missing_files = pd.concat([missing_files, article])
@@ -176,3 +175,36 @@ def create_article_base(raw_article_list = 'raw_article_list.csv',
         missing_files = pd.DataFrame(missing_files)
         missing_files.to_csv('missing_files.csv', index=False)
 
+    missing_n = len(missing_files['Article_ID'].unique())
+    print(missing_n)
+
+
+# import excluded from orcid
+def import_excluded_from_orcid(save_missing_titles=True):
+    source_path = '..\database_tests\problems\*_old_unpaired.csv'
+    temp_list = glob(source_path, recursive = True)
+    df = pd.DataFrame()
+
+    for file in temp_list:
+        
+        # read file with articles
+        uni_authors = pd.read_csv(file)
+        
+        df = pd.concat([df, uni_authors])
+        
+    title = []
+    empty_titles = []
+    for i, row in df.iterrows():
+        if 'doi.org' in row['link']:
+            title += ['empty']
+            empty_titles += [row['link']]
+            continue
+        else:
+            title += [row['link']]
+            row['link'] = 'empty'
+    
+    df['titles'] = title
+    if save_missing_titles:
+        pd.DataFrame(empty_titles).to_csv('empty_titles.csv')
+    
+    return df
