@@ -152,17 +152,10 @@ def scrape_orcids(links_df):
 
 def main(uni_name = None, data_dir = r'../anonymized/data/institutions', export_dir = r'../data/publications/orcid', format = 'names.xlsx'):
 
-<<<<<<< Updated upstream
     if uni_name == None:
         directories = os.listdir(data_dir)
     else:
         directories = [uni_name]
-=======
-def main():
-
-    # data_dir = r'../anonymized/data/institutions'
-    data_dir = r'D:\data\ranking\data\new'
->>>>>>> Stashed changes
 
     failed_list = []
     uni_list = []
@@ -176,25 +169,14 @@ def main():
             continue
         failed, df = scrape_orcids(links_df)
 
-<<<<<<< Updated upstream
         df.to_csv(os.path.join(export_dir, rf'{uni}.csv'), index=False)
         
-=======
-        # df.to_csv(rf'../data/publications/orcid/{uni}.csv', index=False)
-        df.to_csv(rf'D:\data\ranking\publication_links\new\{uni}.csv', index=False)
-
->>>>>>> Stashed changes
         uni_list.extend([uni] * len(failed))
         failed_list.extend(failed)
         print('failed', failed)
     failed_df = pd.DataFrame({'uni': uni_list, 'failed': failed_list})
-<<<<<<< Updated upstream
     failed_df.to_csv(os.path.join(export_dir, 'failed.csv'), index=False)
-=======
-    failed_df.to_csv(r'D:\data\ranking\publication_links\new\failed.csv', index=False)
->>>>>>> Stashed changes
 
 
 if __name__ == '__main__':
     main()
-
