@@ -75,7 +75,7 @@ def import_orcid_article_list(source = "../data/publications/orcid", save_as_csv
     
     for file in files:
         # skip certain files
-        if file in ['export_to_automated', 'export_to_manual', 'failed.csv']:
+        if file in ['automated_doi', 'export_to_automated', 'export_to_manual', 'failed.csv']:
             continue
         
         # read file with articles
@@ -86,6 +86,7 @@ def import_orcid_article_list(source = "../data/publications/orcid", save_as_csv
     Article_ID = []
     for i, row in (df.iterrows()):
         y = create_Article_ID(row)
+        print(row['title'])
         Article_ID += [y]
 
     df.rename(columns = {'id':'filename', 'link':'doi'}, inplace = True)
