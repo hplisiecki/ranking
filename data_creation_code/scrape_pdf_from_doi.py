@@ -82,12 +82,13 @@ def download_all():
     last_downloaded_pdf = sorted_files[-1]
     last_downloaded_pdf = last_downloaded_pdf.split('\\')[-1]
 
-    # locate index
-    index = transformed_links.index(last_downloaded_pdf)
-    # get all after the link
-    links_list = links_list[index + 1:]
-
-    failed_list = []
+    try:
+        # locate index
+        index = transformed_links.index(last_downloaded_pdf)
+        # get all after the link
+        links_list = links_list[index + 1:]
+    except:
+        pass
 
     # get the driver up and running
     options = webdriver.FirefoxOptions()
