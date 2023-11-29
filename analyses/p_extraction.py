@@ -31,6 +31,7 @@ pres_list = []
 for file in tqdm(files):
     Res, pRes = checkPDF(r'D:/data/ranking/pdfs/v1-1/5267354650028915100.pdf')
     Res['Source'] = os.path.basename(file).replace('.pdf', '')
+    pRes['Source'] = os.path.basename(file).replace('.pdf', '')
     res_list.append(Res)
     pres_list.append(pRes)
 
