@@ -50,13 +50,15 @@ def filter_by_authors(authors, SONaa_file):
             lid.append(nid[0])
             
     return(lid)
-            
-# How to use?
-# SONaa_file = "./List_of_articles.SONaa"
-# institute = 'SWPS_Uniwersytet_Humanistycznospołeczny_z_siedzibą_w_Warszawie'
-# authors_file = './List_of_authors.csv'
-# x = filter_by_institutes(institute, authors_file, SONaa_file)
+
 def filter_by_institutes(institute, authors_file, SONaa_file):
     loa = pd.read_csv(authors_file)
     authors = loa[loa['main_job'] == institute]['fullname'].tolist()
     return(filter_by_authors(authors, SONaa_file))
+
+            
+# How to use?
+SONaa_file = "./List_of_articles.SONaa"
+institute = 'SWPS_Uniwersytet_Humanistycznospołeczny_z_siedzibą_w_Warszawie'
+authors_file = './List_of_authors.csv'
+x = filter_by_institutes(institute, authors_file, SONaa_file)
