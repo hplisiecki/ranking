@@ -58,7 +58,7 @@ def filter_by_institutes(institute, authors_file, SONaa_file):
 
             
 # How to use?
-SONaa_file = "./List_of_articles.SONaa"
+SONaa_file = "analyses/List_of_articles.SONaa"
 institute = 'SWPS_Uniwersytet_Humanistycznospołeczny_z_siedzibą_w_Warszawie'
-authors_file = './List_of_authors.csv'
+authors_file = 'analyses/List_of_authors.csv'
 x = filter_by_institutes(institute, authors_file, SONaa_file)
