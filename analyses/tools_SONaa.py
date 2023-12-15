@@ -53,12 +53,20 @@ def filter_by_authors(authors, SONaa_file):
 
 def filter_by_institutes(institute, authors_file, SONaa_file):
     loa = pd.read_csv(authors_file)
-    authors = loa[loa['main_job'] == institute]['fullname'].tolist()
+    authors = loa[loa['main_job'] == institute]['id'].tolist()
     return(filter_by_authors(authors, SONaa_file))
 
+# clean_date
+def clean_date(date):
+    if date == 'unrecovered': return(date)
+    elif len(date) == 4: return(date)
+    else:
+        s = re.split('-|/',date)
+    s = [item for item in s if len(item)==4]
+    return(s[0])
             
 # How to use?
-SONaa_file = "analyses/List_of_articles.SONaa"
+SONaa_file = "List_of_articles.SONaa"
 institute = 'SWPS_Uniwersytet_Humanistycznospołeczny_z_siedzibą_w_Warszawie'
-authors_file = 'analyses/List_of_authors.csv'
+authors_file = 'List_of_authors.csv'
 x = filter_by_institutes(institute, authors_file, SONaa_file)

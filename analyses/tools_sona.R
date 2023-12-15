@@ -64,15 +64,15 @@ filter_by_authors <- function(authors, SONaa_file) {
 filter_by_institutes <- function(institute, authors_file, SONaa_file) {
   loa <- read.csv(authors_file, fileEncoding = 'UTF-8')
   authors <- loa %>% filter(main_job == institute)
-  return(filter_by_authors(authors$fullname, SONaa_file))
+  return(filter_by_authors(authors$id, SONaa_file))
 }
 
 
-SONaa_file <- "data/List_of_articles.SONaa"
+SONaa_file <- "ranking/analyses/List_of_articles.SONaa"
 sona = open_SONaa(SONaa_file)
 
 institute <- 'SWPS_Uniwersytet_Humanistycznospołeczny_z_siedzibą_w_Warszawie'
-authors_file <- 'data/List_of_authors.csv'
+authors_file <- 'ranking/analyses/List_of_authors.csv'
 
 
 # Call the function and store the result
