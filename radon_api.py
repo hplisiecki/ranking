@@ -10,7 +10,7 @@ import json
 def get_works_from_API(fistName, lastName, lastToken = None, fromY = "2017", toY = '2021'):
     params = {}
     
-    if lastToken == lastToken: params['token'] = lastToken
+    params['token'] = lastToken
 
     params.update({
         'resultNumbers' : 100,
