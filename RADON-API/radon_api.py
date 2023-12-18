@@ -30,3 +30,4 @@ def get_works_from_API(fistName, lastName, lastToken = None, fromY = "2017", toY
     
     except:
         print(response)
+        return None, None, None
