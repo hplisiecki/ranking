@@ -24,7 +24,7 @@ def retry_call(fistName, lastName, lastToken):
     if res[2] is None:
         print("Retry")
         lastToken = None
-        time.sleep(10)
+        time.sleep(2)
         res = retry_call(fistName, lastName, lastToken)
 
     return res

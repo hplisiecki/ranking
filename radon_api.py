@@ -35,8 +35,6 @@ def get_works_from_API(fistName, lastName, lastToken = None, fromY = "2017", toY
     print(fistName, lastName, count, "works. New last token: ", newlastToken)
     if count >= 100: print('Warning, to much works to download!')
     return (results, count, newlastToken)
-    # except:
-    #     print(response)
 
 
 # lastToken = "MTY5ODY3NzE0MjcyOQ=="
