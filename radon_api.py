@@ -6,7 +6,7 @@ import json
 # curl -X 'GET' \
 #   'https://radon.nauka.gov.pl/opendata/polon/publications?resultNumbers=100&firstName=Micha%C5%82&lastName=Bilewicz&yearFrom=2017&yearTo=2021' \
 #   -H 'accept: application/json'
-
+# aa
 def get_works_from_API(fistName, lastName, lastToken = None, fromY = "2017", toY = '2021'):
     params = {}
     
