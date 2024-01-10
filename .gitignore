@@ -3,3 +3,4 @@ anonymized/**
 .obsidian
 client_secrets.json
 geckodriver.log
+.idea/
