@@ -4,3 +4,7 @@ anonymized/**
 client_secrets.json
 geckodriver.log
 .idea/
+*.pyc
+
+# file to big
+data/publications/pbn/updated_scientists.json
