@@ -1,0 +1,3 @@
+[submodule "official_repo"]
+	path = official_repo
+	url = https://github.com/stowarzyszenieotwartejnauki/Estimating-replicability-of-Polish-psychology
