@@ -104,11 +104,15 @@ closest_titles_df.to_csv('data/journal_cleaning/closest_titles.csv', index=False
 # to excel
 closest_titles_df.to_excel('data/journal_cleaning/closest_titles.xlsx', index=False)
 
+import pandas as pd
+import re
 # load
 closest_titles_df = pd.read_csv('data/journal_cleaning/closest_titles.csv')
 # dropnan
 closest_titles_df = closest_titles_df.dropna(subset=['Original Title'])
-article_list = pd.read_csv('official_repo/data/Orcid_raw_article_list.csv')
+article_list = pd.read_csv('official_repo/data/New_ID_Orcid_raw_article_list.csv')
+# sort
+
 # dropna from journals
 article_list = article_list.dropna(subset=['journal'])
 
@@ -116,15 +120,22 @@ article_list['clean_titles'] = article_list['journal'].apply(clean_title)
 
 collate_doi = []
 collate_id = []
+collate_orcid = []
 for idx, original_title in enumerate(closest_titles_df['Original Title']):
     article_doi = article_list[article_list['clean_titles'] == original_title]['doi'].iloc[0]
     article_id = article_list[article_list['clean_titles'] == original_title]['Article_ID'].iloc[0]
+    article_orcid = article_list[article_list['clean_titles'] == original_title]['orcid'].iloc[0]
     collate_doi.append(article_doi)
     collate_id.append(article_id)
+    collate_orcid.append(article_orcid)
 
 closest_titles_df['doi'] = collate_doi
 closest_titles_df['Article_ID'] = collate_id
+closest_titles_df['ORCID'] = collate_orcid
 # save
 closest_titles_df.to_csv('data/journal_cleaning/closest_titles_with_doi.csv', index=False)
 # to excel
 closest_titles_df.to_excel('data/journal_cleaning/closest_titles_with_doi.xlsx', index=False)
+
+# load
+closest_titles_df = pd.read_csv('data/journal_cleaning/closest_titles_with_doi.csv')
